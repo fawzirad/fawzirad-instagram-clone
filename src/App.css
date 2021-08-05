@@ -43,3 +43,8 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+.menu_nav {
+  display: flex;
+  align-items: center;
+}

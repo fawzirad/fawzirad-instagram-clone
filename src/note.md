@@ -24,25 +24,4 @@
   //   }
   // }, [user, username])
 
-  // function signUp event
-  // const signUp = (event) => {
-  //   event.preventDefault()
-
-  //   auth
-  //     .createUserWithEmailAndPassword(email, password)
-  //     .then((authUser) => {
-  //       return authUser.user.updateProfile({
-  //         displayName: username,
-  //       })
-  //     })
-  //     .catch((error) => alert(error.message))
-  //   setOpen(false)
-  // }
-
-  // // function signIn event
-  // const signIn = (event) => {
-  //   event.preventDefault()
-
-  //   auth.signInWithEmailAndPassword(email, password).catch((error) => alert(error.message))
-  //   setOpenSignIn(false)
-  // }
+  
