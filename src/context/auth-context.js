@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react'
-import { auth } from '../firebase'
+import { db, auth } from '../firebase'
 
 export const AuthContext = createContext()
 
@@ -13,9 +13,16 @@ export const AuthProvider = ({ children }) => {
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((authUser) => {
-        return authUser.user.updateProfile({
-          displayName: username,
-        })
+        return authUser.user
+          .updateProfile({
+            displayName: username,
+          })
+          .then(() => {
+            db.collection('users').add({
+              userId: authUser.user.uid,
+            })
+            window.location.reload()
+          })
       })
       .catch((error) => alert(error.message))
     setOpen(false)
@@ -31,19 +38,10 @@ export const AuthProvider = ({ children }) => {
   // gets user from firebase
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
-      if (authUser) {
-        setUser(authUser)
-        if (!authUser.displayName) {
-          return authUser.updateProfile({
-            displayName: username,
-          })
-        }
-      } else {
-        setUser(null)
-      }
+      setUser(authUser ? authUser : null)
     })
     return () => unsubscribe
-  }, [user, username])
+  }, [user])
 
   const values = { signIn, signUp, open, user, setUsername, username }
   return <AuthContext.Provider value={values} children={children} />

@@ -33,6 +33,7 @@ const SignUpModal = ({ open, setOpen }) => {
             </center>
             <Input
               placeholder='username'
+              autoFocus
               type='text'
               value={username}
               onChange={(e) => setUsername(e.target.value)}

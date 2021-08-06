@@ -32,6 +32,7 @@ const SignInModal = ({ openSignIn, setOpenSignIn }) => {
             </center>
             <Input
               placeholder='email'
+              autoFocus
               type='text'
               value={email}
               onChange={(e) => setEmail(e.target.value)}

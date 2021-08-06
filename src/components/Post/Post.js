@@ -59,7 +59,6 @@ function Post({ postId, user, username, caption, imageUrl }) {
 
       <div className='post__comments'>
         {comments.map((comment) => {
-          console.log(comment)
           return (
             <p>
               <strong>{comment.username}</strong> {comment.text}
