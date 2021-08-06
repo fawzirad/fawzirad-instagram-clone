@@ -50,7 +50,7 @@ const Home = () => {
           </div>
           <div className='app__postsRight'>
             <h1>You may also follow !</h1>
-            <h2>Users</h2>
+            <h2>Users 0</h2>
           </div>
         </div>
       </section>
