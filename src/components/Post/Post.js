@@ -17,17 +17,21 @@ function Post({ postId, user, username, caption, imageUrl }) {
         .collection('comments')
         .orderBy('timestamp', 'desc')
         .onSnapshot((snapshot) => {
-          setComments(snapshot.docs.map((doc) => doc.data()))
+          const _comments = snapshot.docs.map((doc) => {
+            return {
+              docId: doc.id,
+              ...doc.data(),
+            }
+          })
+          setComments(_comments)
         })
     }
 
-    return () => {
-      unsubscribe()
-    }
+    return () => unsubscribe()
   }, [postId])
 
-  const postComment = (event) => {
-    event.preventDefault()
+  const postComment = (e) => {
+    e.preventDefault()
     db.collection('posts').doc(postId).collection('comments').add({
       text: comment,
       username: user.displayName,
@@ -39,7 +43,11 @@ function Post({ postId, user, username, caption, imageUrl }) {
   return (
     <div className='post'>
       <div className='post__header'>
-        <Avatar className='post__avatar' alt='RafehQazi' src='/static/images/avatar/1.jpg' />
+        <Avatar
+          className='post__avatar'
+          alt='RafehQazi'
+          src='/static/images/avatar/1.jpg'
+        />
         <h3>{username}</h3>
       </div>
 
@@ -50,11 +58,14 @@ function Post({ postId, user, username, caption, imageUrl }) {
       </h4>
 
       <div className='post__comments'>
-        {comments.map((comment) => (
-          <p>
-            <strong>{comment.username}</strong> {comment.text}
-          </p>
-        ))}
+        {comments.map((comment) => {
+          console.log(comment)
+          return (
+            <p>
+              <strong>{comment.username}</strong> {comment.text}
+            </p>
+          )
+        })}
       </div>
       {user && (
         <form className='post__commentBox'>

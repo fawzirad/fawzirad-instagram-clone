@@ -1,11 +1,10 @@
 import React, { createContext, useEffect, useState } from 'react'
-import { db, auth } from '../firebase'
+import { auth } from '../firebase'
 
 export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
   const [open, setOpen] = useState(false)
-  const [openSignIn, setOpenSignIn] = useState(false)
   const [username, setUsername] = useState('')
   const [user, setUser] = useState(null)
 
@@ -24,8 +23,9 @@ export const AuthProvider = ({ children }) => {
 
   // function signIn event
   const signIn = (email, password) => {
-    auth.signInWithEmailAndPassword(email, password).catch((error) => alert(error.message))
-    setOpenSignIn(false)
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .catch((error) => alert(error.message))
   }
 
   // gets user from firebase
@@ -45,6 +45,6 @@ export const AuthProvider = ({ children }) => {
     return () => unsubscribe
   }, [user, username])
 
-  const values = { signIn, signUp, open, openSignIn, user }
+  const values = { signIn, signUp, open, user, setUsername, username }
   return <AuthContext.Provider value={values} children={children} />
 }
