@@ -1,42 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { Avatar, Button } from '@material-ui/core'
-import firebase from 'firebase'
-import { db } from '../../firebase'
+import { useData } from '../../context/data-context'
 import './Post.css'
 
 function Post({ postId, user, username, caption, imageUrl }) {
-  const [comments, setComments] = useState([])
   const [comment, setComment] = useState('')
+  const { getPostComments, comments, createPostComment } = useData()
 
   useEffect(() => {
-    let unsubscribe
-    if (postId) {
-      unsubscribe = db
-        .collection('posts')
-        .doc(postId)
-        .collection('comments')
-        .orderBy('timestamp', 'desc')
-        .onSnapshot((snapshot) => {
-          const _comments = snapshot.docs.map((doc) => {
-            return {
-              docId: doc.id,
-              ...doc.data(),
-            }
-          })
-          setComments(_comments)
-        })
-    }
-
-    return () => unsubscribe()
-  }, [postId])
+    getPostComments(postId)
+  }, [getPostComments, postId])
 
   const postComment = (e) => {
     e.preventDefault()
-    db.collection('posts').doc(postId).collection('comments').add({
-      text: comment,
-      username: user.displayName,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-    })
+
+    createPostComment(postId, comment, user)
     setComment('')
   }
 
@@ -58,9 +36,9 @@ function Post({ postId, user, username, caption, imageUrl }) {
       </h4>
 
       <div className='post__comments'>
-        {comments.map((comment) => {
+        {comments.map((comment, idx) => {
           return (
-            <p>
+            <p key={idx}>
               <strong>{comment.username}</strong> {comment.text}
             </p>
           )

@@ -12,16 +12,20 @@ export const AuthProvider = ({ children }) => {
   const signUp = (email, password, username) => {
     auth
       .createUserWithEmailAndPassword(email, password)
-      .then((authUser) => {
-        return authUser.user
+      .then(({ user }) => {
+        return user
           .updateProfile({
             displayName: username,
           })
           .then(() => {
-            db.collection('users').add({
-              userId: authUser.user.uid,
-            })
-            window.location.reload()
+            db.collection('users')
+              .add({
+                userId: user.uid,
+                displayName: user.displayName,
+                photoURL: user.photoURL,
+                email: user.email,
+              })
+              .finally(() => window.location.reload())
           })
       })
       .catch((error) => alert(error.message))

@@ -3,26 +3,12 @@ import ImageUpload from '../components/ImageUpload/ImageUpload'
 import Post from '../components/Post/Post'
 import Navbar from '../components/Navbar/Navbar'
 import { AuthContext } from '../context/auth-context'
-import { db } from '../firebase'
+import { useData } from '../context/data-context'
+import { Link } from 'react-router-dom'
 
 const Home = () => {
-  const [posts, setPosts] = useState([])
   const { user } = useContext(AuthContext)
-
-  useEffect(() => {
-    // this is where the code runs
-    db.collection('posts')
-      .orderBy('timestamp', 'desc')
-      .onSnapshot((snapshot) => {
-        // every time a new post is added, this code fires...
-        setPosts(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            post: doc.data(),
-          }))
-        )
-      })
-  }, [])
+  const { users, posts } = useData()
 
   return (
     <>
@@ -50,7 +36,24 @@ const Home = () => {
           </div>
           <div className='app__postsRight'>
             <h1>You may also follow !</h1>
+
             <h2>Users</h2>
+
+            {users.length > 0 ? (
+              <>
+                <ul>
+                  {users?.map(({ docId, displayName }) => {
+                    return (
+                      <li key={docId}>
+                        <Link to={`/p/${docId}`}>{displayName}</Link>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </>
+            ) : (
+              <span>no users</span>
+            )}
           </div>
         </div>
       </section>
