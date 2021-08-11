@@ -36,24 +36,6 @@ const Home = () => {
           </div>
           <div className='app__postsRight'>
             <h1>You may also follow !</h1>
-
-            <h2>Users</h2>
-
-            {users.length > 0 ? (
-              <>
-                <ul>
-                  {users?.map(({ docId, displayName }) => {
-                    return (
-                      <li key={docId}>
-                        <Link to={`/p/${docId}`}>{displayName}</Link>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </>
-            ) : (
-              <span>no users</span>
-            )}
           </div>
         </div>
       </section>
