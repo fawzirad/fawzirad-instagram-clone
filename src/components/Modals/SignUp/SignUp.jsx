@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
 import { Button, Input, Modal } from '@material-ui/core'
 import { getModalStyle, useStyles } from '../../../shared/styles'
-import { useContext } from 'react'
-import { AuthContext } from '../../../context/auth-context'
+import { useAuth } from '../../../context/auth-context'
 
 const SignUpModal = ({ open, setOpen }) => {
   const [modalStyle] = useState(getModalStyle)
   const classes = useStyles()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const { signUp, username, setUsername } = useContext(AuthContext)
+  const { signUp, username, setUsername } = useAuth()
 
   const signUpHandler = (e) => {
     e.preventDefault()

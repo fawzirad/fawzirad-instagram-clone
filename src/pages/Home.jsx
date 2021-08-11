@@ -1,13 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React from 'react'
 import ImageUpload from '../components/ImageUpload/ImageUpload'
 import Post from '../components/Post/Post'
 import Navbar from '../components/Navbar/Navbar'
-import { AuthContext } from '../context/auth-context'
+import { useAuth } from '../context/auth-context'
 import { useData } from '../context/data-context'
 import { Link } from 'react-router-dom'
+import { Avatar } from '@material-ui/core'
 
 const Home = () => {
-  const { user } = useContext(AuthContext)
+  const { user } = useAuth()
   const { users, posts } = useData()
 
   return (
@@ -22,33 +23,26 @@ const Home = () => {
         <div className='app__posts'>
           <div className='app__postsLeft'>
             {posts.map(({ id, post }) => {
-              return (
-                <Post
-                  key={id}
-                  postId={id}
-                  user={user}
-                  username={post.username}
-                  caption={post.caption}
-                  imageUrl={post.imageUrl}
-                />
-              )
+              return <Post key={id} postId={id} user={user} {...post} />
             })}
           </div>
           <div className='app__postsRight'>
             <h1>You may also follow !</h1>
 
             <h2>Users</h2>
-
             {users.length > 0 ? (
               <>
                 <ul>
-                  {users?.map(({ docId, displayName }) => {
-                    return (
-                      <li key={docId}>
-                        <Link to={`/p/${docId}`}>{displayName}</Link>
-                      </li>
-                    )
-                  })}
+                  {users?.map(({ docId, displayName }) => (
+                    <li className='post__header' key={docId}>
+                      <Avatar
+                        className='post__avatar'
+                        alt='RafehQazi'
+                        src={'https://ui-avatars.com/api/?name=' + displayName}
+                      />
+                      <Link to={`/p/${docId}`}>{displayName}</Link>
+                    </li>
+                  ))}
                 </ul>
               </>
             ) : (

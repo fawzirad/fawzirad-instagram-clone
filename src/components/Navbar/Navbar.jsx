@@ -1,17 +1,17 @@
 import './Navbar.css'
 
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { AiFillHome } from 'react-icons/ai'
 import { Button } from '@material-ui/core'
 import { ProfileBurger } from '../ProfileBurger/ProfileBurger'
-import { AuthContext } from '../../context/auth-context'
+import { useAuth } from '../../context/auth-context'
 import SignInModal from '../Modals/SignIn/SignIn'
 import SignUpModal from '../Modals/SignUp/SignUp'
 
 const Navbar = () => {
   const [open, setOpen] = useState(false)
   const [openSignIn, setOpenSignIn] = useState(false)
-  const { user } = useContext(AuthContext)
+  const { user } = useAuth()
 
   return (
     <>

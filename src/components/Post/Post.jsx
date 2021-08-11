@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import { Avatar, Button } from '@material-ui/core'
 import { useData } from '../../context/data-context'
 import './Post.css'
+import moment from 'moment'
 
 function Post({ postId, user, username, caption, imageUrl }) {
   const [comment, setComment] = useState('')
@@ -9,7 +11,7 @@ function Post({ postId, user, username, caption, imageUrl }) {
 
   useEffect(() => {
     getPostComments(postId)
-  }, [getPostComments, postId])
+  }, [postId])
 
   const postComment = (e) => {
     e.preventDefault()
@@ -24,7 +26,7 @@ function Post({ postId, user, username, caption, imageUrl }) {
         <Avatar
           className='post__avatar'
           alt='RafehQazi'
-          src='/static/images/avatar/1.jpg'
+          src={'https://ui-avatars.com/api/?name=' + username}
         />
         <h3>{username}</h3>
       </div>
@@ -38,8 +40,16 @@ function Post({ postId, user, username, caption, imageUrl }) {
       <div className='post__comments'>
         {comments.map((comment, idx) => {
           return (
-            <p key={idx}>
-              <strong>{comment.username}</strong> {comment.text}
+            <p
+              key={idx}
+              style={{ display: 'flex', justifyContent: 'space-between' }}
+            >
+              <span>
+                <strong>{comment.username}</strong> {comment.text}
+              </span>
+              <small>
+                {moment(comment.timestamp.toDate(), 'YYYYMMDD').fromNow()}
+              </small>
             </p>
           )
         })}

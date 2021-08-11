@@ -1,9 +1,9 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { db, auth } from '../firebase'
 
-export const AuthContext = createContext()
+const AuthContext = createContext()
 
-export const AuthProvider = ({ children }) => {
+const AuthProvider = ({ children }) => {
   const [open, setOpen] = useState(false)
   const [username, setUsername] = useState('')
   const [user, setUser] = useState(null)
@@ -50,3 +50,9 @@ export const AuthProvider = ({ children }) => {
   const values = { signIn, signUp, open, user, setUsername, username }
   return <AuthContext.Provider value={values} children={children} />
 }
+
+const useAuth = () => {
+  return useContext(AuthContext)
+}
+
+export { useAuth, AuthProvider }

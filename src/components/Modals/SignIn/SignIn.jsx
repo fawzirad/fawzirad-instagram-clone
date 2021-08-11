@@ -1,6 +1,6 @@
 import { Button, Input, Modal } from '@material-ui/core'
-import React, { useContext, useState } from 'react'
-import { AuthContext } from '../../../context/auth-context'
+import React, { useState } from 'react'
+import { useAuth } from '../../../context/auth-context'
 import { getModalStyle, useStyles } from '../../../shared/styles'
 
 const SignInModal = ({ openSignIn, setOpenSignIn }) => {
@@ -8,7 +8,7 @@ const SignInModal = ({ openSignIn, setOpenSignIn }) => {
   const classes = useStyles()
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
-  const { signIn } = useContext(AuthContext)
+  const { signIn } = useAuth()
 
   const signInHandler = (e) => {
     e.preventDefault()
