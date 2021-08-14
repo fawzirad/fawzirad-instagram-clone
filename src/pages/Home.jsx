@@ -1,7 +1,5 @@
 import React from 'react'
-import ImageUpload from '../components/ImageUpload/ImageUpload'
 import Post from '../components/Post/Post'
-import Navbar from '../components/Navbar/Navbar'
 import { useAuth } from '../context/auth-context'
 import { useData } from '../context/data-context'
 import { Link } from 'react-router-dom'
@@ -14,12 +12,6 @@ const Home = () => {
   return (
     <>
       <section>
-        <Navbar />
-        {user?.displayName ? (
-          <ImageUpload username={user.displayName} />
-        ) : (
-          <h3>Sorry you need to login to upload</h3>
-        )}
         <div className='app__posts'>
           <div className='app__postsLeft'>
             {posts.map(({ id, post }) => {

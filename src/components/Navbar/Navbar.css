@@ -10,6 +10,10 @@
   justify-content: space-between;
 }
 
+.app__header a {
+  margin: 0 10px;
+  color: #2f2f2f;
+}
 
 .app__headerImage {
   object-fit: contain;
