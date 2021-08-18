@@ -14,13 +14,13 @@ const Home = () => {
       <section>
         <div className='app__posts'>
           <div className='app__postsLeft'>
-            {posts.map(({ id, post }) => {
-              return <Post key={id} postId={id} user={user} {...post} />
-            })}
+            {posts.length === 0 && <h1>No Posts</h1>}
+            {posts.map(({ id, post }) => (
+              <Post key={id} postId={id} user={user} post={post} />
+            ))}
           </div>
           <div className='app__postsRight'>
             <h1>You may also follow !</h1>
-
             <h2>Users</h2>
             {users.length > 0 ? (
               <>

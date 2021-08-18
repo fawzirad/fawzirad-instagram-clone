@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { Button } from '@material-ui/core'
-import { storage, db, timestamp } from '../../firebase'
+import { useData } from '../../context/data-context'
 import './ImageUpload.css'
 
-function ImageUpload({ username }) {
+function ImageUpload() {
   const [image, setImage] = useState(null)
-  const [progress, setProgress] = useState(0)
   const [caption, setCaption] = useState('')
+  const { progress, createPost } = useData()
 
   const handleChange = (e) => {
     if (e.target.files[0]) {
@@ -15,38 +15,11 @@ function ImageUpload({ username }) {
   }
 
   const handleUpload = () => {
-    const uploadTask = storage.ref(`images/${image.name}`).put(image)
-    uploadTask.on(
-      'state_changed',
-      (snapshot) => {
-        // progress function ...
-        const progress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        )
-        setProgress(progress)
-      },
-      (error) => alert(error.message),
-      () => {
-        // complete function ...
-        storage
-          .ref('images')
-          .child(image.name)
-          .getDownloadURL()
-          .then((url) => {
-            // post image inside db
-            db.collection('posts').add({
-              timestamp: timestamp(),
-              caption: caption,
-              imageUrl: url,
-              username: username,
-            })
-
-            setProgress(0)
-            setCaption('')
-            setImage(null)
-          })
-      }
-    )
+    const _post = {
+      image,
+      caption,
+    }
+    createPost(_post)
   }
 
   return (

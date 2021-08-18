@@ -8,7 +8,7 @@ const CreatePost = () => {
       <section className='post__create'>
         <h1>Create Post</h1>
         {user?.displayName ? (
-          <ImageUpload username={user.displayName} />
+          <ImageUpload />
         ) : (
           <h3>Sorry you need to login to upload</h3>
         )}

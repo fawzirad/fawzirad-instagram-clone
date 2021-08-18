@@ -1,9 +1,12 @@
 import React, { createContext, useEffect, useState, useContext } from 'react'
-import { db, timestamp } from '../firebase'
+import { db, timestamp, storage } from '../firebase'
+import { useAuth } from './auth-context'
 
 const DataContext = createContext()
 
 const DataProvider = ({ children }) => {
+  const { user } = useAuth()
+  const [progress, setProgress] = useState(0)
   const [users, setUsers] = useState([])
   const [posts, setPosts] = useState([])
   const [comments, setComments] = useState([])
@@ -19,8 +22,6 @@ const DataProvider = ({ children }) => {
     })
   }
 
-  const createPost = () => {}
-
   const getPosts = () => {
     db.collection('posts')
       .orderBy('timestamp', 'desc')
@@ -34,7 +35,7 @@ const DataProvider = ({ children }) => {
       })
   }
 
-  const createPostsLike = () => {}
+  // const createPostsLike = () => {}
 
   const createPostComment = (postId, comment, user) => {
     db.collection('posts').doc(postId).collection('comments').add({
@@ -66,13 +67,83 @@ const DataProvider = ({ children }) => {
     return () => unsubscribe()
   }
 
+  const likePost = (postId) => {
+    if (!user) return
+
+    const _docRef = db.collection('posts').doc(postId)
+    _docRef.get().then((_doc) => {
+      if (_doc.exists) {
+        const { likes } = _doc.data()
+
+        const isLiked = likes.find((_uid) => _uid === user.uid)
+        const removeLike = likes.filter((_uid) => _uid !== user.uid)
+
+        if (!isLiked) {
+          _docRef.update({
+            likes: [...likes, user.uid],
+          })
+        } else {
+          _docRef.update({
+            likes: [...removeLike],
+          })
+        }
+      }
+    })
+  }
+
   useEffect(() => {
     getPosts()
     getUsers()
 
     return getUsers
   }, [])
-  const values = { users, posts, comments, getPostComments, createPostComment }
+
+  const createPost = ({ image, caption }) => {
+    if (!user) return
+
+    const uploadTask = storage.ref(`images/${image.name}`).put(image)
+    uploadTask.on(
+      'state_changed',
+      (snapshot) => {
+        // progress function ...
+        const progress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        )
+        setProgress(progress)
+      },
+      (error) => alert(error.message),
+      () => {
+        // complete function ...
+        storage
+          .ref('images')
+          .child(image.name)
+          .getDownloadURL()
+          .then((url) => {
+            // post image inside db
+            db.collection('posts').add({
+              timestamp: timestamp(),
+              caption: caption,
+              imageUrl: url,
+              username: user.displayName,
+              uid: user.uid,
+              likes: [],
+            })
+
+            setProgress(0)
+          })
+      }
+    )
+  }
+  const values = {
+    users,
+    posts,
+    comments,
+    getPostComments,
+    createPostComment,
+    likePost,
+    progress,
+    createPost,
+  }
   return <DataContext.Provider value={values} children={children} />
 }
 

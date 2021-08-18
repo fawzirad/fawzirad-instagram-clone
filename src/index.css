@@ -48,3 +48,20 @@ body {
     display: flex;
     align-items: center;
 }
+
+.like__button {
+    border: none;
+    background-color: transparent;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.like__form {
+    display: flex;
+    align-items: center;
+}
+
+
+.liked {
+    fill: rgb(189, 41, 41);
+}

@@ -41,7 +41,8 @@
 
 .post__commentBox {
     display: flex;
-    margin-top: 10px;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .post__comments {
@@ -53,8 +54,4 @@
     padding: 10px;
     border: none;
     border-top: 1px solid lightgray;
-}
-
-.post__button {
-    flex: 0;
 }

@@ -4,8 +4,10 @@ import { Avatar, Button } from '@material-ui/core'
 import { useData } from '../../context/data-context'
 import './Post.css'
 import moment from 'moment'
+import Like from './Like'
 
-function Post({ postId, user, username, caption, imageUrl }) {
+const Post = ({ postId, user, post }) => {
+  const { username, caption, imageUrl } = post
   const [comment, setComment] = useState('')
   const { getPostComments, comments, createPostComment } = useData()
 
@@ -21,7 +23,7 @@ function Post({ postId, user, username, caption, imageUrl }) {
   }
 
   return (
-    <div className='post'>
+    <article className='post'>
       <div className='post__header'>
         <Avatar
           className='post__avatar'
@@ -35,25 +37,24 @@ function Post({ postId, user, username, caption, imageUrl }) {
 
       <h4 className='post__text'>
         <strong>{username}</strong> {caption}
+        <Like post={post} postId={postId} />
       </h4>
 
-      <div className='post__comments'>
+      <section className='post__comments'>
         {comments.map((comment, idx) => {
           return (
-            <p
-              key={idx}
-              style={{ display: 'flex', justifyContent: 'space-between' }}
-            >
-              <span>
-                <strong>{comment.username}</strong> {comment.text}
-              </span>
-              <small>
-                {moment(comment.timestamp.toDate(), 'YYYYMMDD').fromNow()}
+            <div key={idx}>
+              <p>
+                <strong>{comment.username.toUpperCase()} : </strong>
+                {comment.text}
+              </p>
+              <small style={{ fontSize: '12px' }}>
+                {moment(comment?.timestamp?.toDate(), 'YYYYMMDD').fromNow()}
               </small>
-            </p>
+            </div>
           )
         })}
-      </div>
+      </section>
       {user && (
         <form className='post__commentBox'>
           <input
@@ -65,16 +66,17 @@ function Post({ postId, user, username, caption, imageUrl }) {
           />
           <Button
             variant='contained'
+            color='secondary'
             className='post__button'
             disabled={!comment}
             type='submit'
             onClick={postComment}
           >
-            Post
+            Comment
           </Button>
         </form>
       )}
-    </div>
+    </article>
   )
 }
 
