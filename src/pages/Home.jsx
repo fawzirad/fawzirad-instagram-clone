@@ -11,8 +11,8 @@ const Home = () => {
 
   return (
     <>
-      <section>
-        <div className='app__posts'>
+      <main>
+        <section className='app__posts'>
           <div className='app__postsLeft'>
             {posts.length === 0 && <h1>No Posts</h1>}
             {posts.map(({ id, post }) => (
@@ -25,14 +25,14 @@ const Home = () => {
             {users.length > 0 ? (
               <>
                 <ul>
-                  {users?.map(({ docId, displayName }) => (
+                  {users?.map(({ docId, userId, displayName }) => (
                     <li className='post__header' key={docId}>
                       <Avatar
                         className='post__avatar'
                         alt='RafehQazi'
                         src={'https://ui-avatars.com/api/?name=' + displayName}
                       />
-                      <Link to={`/p/${docId}`}>{displayName}</Link>
+                      <Link to={`/p/${userId}`}>{displayName}</Link>
                     </li>
                   ))}
                 </ul>
@@ -41,8 +41,8 @@ const Home = () => {
               <span>no users</span>
             )}
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
     </>
   )
 }

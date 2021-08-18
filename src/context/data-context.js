@@ -10,6 +10,7 @@ const DataProvider = ({ children }) => {
   const [users, setUsers] = useState([])
   const [posts, setPosts] = useState([])
   const [comments, setComments] = useState([])
+  const [userProfile, setUserProfile] = useState(null)
 
   const getUsers = () => {
     db.collection('users').onSnapshot((snapshot) => {
@@ -19,6 +20,31 @@ const DataProvider = ({ children }) => {
           ...doc.data(),
         }))
       )
+    })
+  }
+
+  const getSingleUser = (userId) => {
+    let _user = null
+    db.collection('users').onSnapshot((snapshot) => {
+      _user = snapshot.docs
+        .map((doc) => ({
+          docId: doc.id,
+          ...doc.data(),
+        }))
+        .find((_user) => _user.userId === userId)
+    })
+    db.collection('posts').onSnapshot((snapshot) => {
+      setUserProfile({
+        user: _user,
+        posts: [
+          ...snapshot.docs
+            .map((doc) => ({
+              docId: doc.id,
+              ...doc.data(),
+            }))
+            .filter((_post) => _post.uid === userId),
+        ],
+      })
     })
   }
 
@@ -143,6 +169,8 @@ const DataProvider = ({ children }) => {
     likePost,
     progress,
     createPost,
+    getSingleUser,
+    userProfile,
   }
   return <DataContext.Provider value={values} children={children} />
 }

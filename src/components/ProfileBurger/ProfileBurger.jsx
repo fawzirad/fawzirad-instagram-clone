@@ -5,10 +5,12 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Fade from '@material-ui/core/Fade'
 import { auth } from '../../firebase'
 import { useAuth } from '../../context/auth-context'
+import { useHistory } from 'react-router-dom'
 
 export const ProfileBurger = () => {
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
+  const history = useHistory()
 
   const { user } = useAuth()
 
@@ -17,6 +19,7 @@ export const ProfileBurger = () => {
   }
 
   const handleClose = () => {
+    history.push(`/p/${user.uid}`)
     setAnchorEl(null)
   }
 
