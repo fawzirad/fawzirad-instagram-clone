@@ -2,17 +2,39 @@
 import React, { useState, useEffect } from 'react'
 import { Avatar, Button } from '@material-ui/core'
 import { useData } from '../../context/data-context'
-import './Post.css'
 import moment from 'moment'
 import Like from './Like'
+import {db} from '../../firebase'
+import './Post.css'
 
 const Post = ({ postId, user, post }) => {
   const { username, caption, imageUrl } = post
   const [comment, setComment] = useState('')
-  const { getPostComments, comments, createPostComment } = useData()
+  const [comments, setComments] = useState([])
+  const {   createPostComment } = useData()
+  console.log(comments);
 
   useEffect(() => {
-    getPostComments(postId)
+    let unsubscribe;
+    if (postId) {
+      setComments([])
+      unsubscribe = db
+        .collection("posts")
+        .doc(postId)
+        .collection("comments")
+        .orderBy("timestamp", "desc")
+        .onSnapshot((snapshot) => {
+          const _comments = snapshot.docs.map((doc) => {
+            return {
+              docId: doc.id,
+              ...doc.data(),
+            };
+          });
+          setComments(_comments);
+        });
+    }
+
+    return unsubscribe;
   }, [postId])
 
   const postComment = (e) => {

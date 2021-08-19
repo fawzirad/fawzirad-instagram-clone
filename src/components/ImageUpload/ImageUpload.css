@@ -4,6 +4,7 @@
     align-items: center;
     justify-content: center;
     margin-top: 100px;
+    
 }
 
 .post__create h1 {
@@ -15,18 +16,28 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    width: 60%;
+    width: 50%;
     margin: 10px auto;
-    background-color: white;
-    border-top: 1px solid lightgray;
+    background-color: rgb(235, 235, 235);
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    padding: 15px;
 }
 
 
 .imageupload input {
-    margin: 20px 10px;
-    padding: 10px 5px;
-    font-size: 20px;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    margin: 10px;
+    padding: 10px;
+    font-size: 15px;
 }
+
+
+.button{
+    background-color: rgb(41, 74, 184) !important;
+}
+
 
 .imageupload__progress {
     width: 100%;

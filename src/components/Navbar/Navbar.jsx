@@ -1,7 +1,8 @@
 import './Navbar.css'
 
 import React, { useState } from 'react'
-import { AiFillHome, AiOutlineFileAdd } from 'react-icons/ai'
+import { AiFillHome } from 'react-icons/ai'
+import {RiAddCircleFill} from 'react-icons/ri'
 import { Button } from '@material-ui/core'
 import { ProfileBurger } from '../ProfileBurger/ProfileBurger'
 import { useAuth } from '../../context/auth-context'
@@ -32,7 +33,7 @@ const Navbar = () => {
           {user ? (
             <>
               <Link to='/post/create'>
-                <AiOutlineFileAdd style={{ fontSize: '20px' }} />
+                <RiAddCircleFill style={{ fontSize: '20px' }} />
               </Link>
               <ProfileBurger />
             </>

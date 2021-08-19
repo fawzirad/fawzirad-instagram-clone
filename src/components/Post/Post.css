@@ -20,7 +20,7 @@
 
 .post__text strong {
     text-transform: uppercase;
-    color: goldenrod;
+    color: rgb(218, 32, 32);
 }
 
 .post__header {

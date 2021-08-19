@@ -21,11 +21,11 @@ const Profile = () => {
   return (
     <>
       <main>
-        <h1>User Profile</h1>
+        <h2>User Profile</h2>
 
         {!userProfile && <span>Loading ...</span>}
 
-        <span>{userProfile?.user.displayName}</span>
+        <span>{userProfile?.user.displayName}</span><br/>
         <span>{userProfile?.user.email}</span>
         <div className='app__posts'>
           {userProfile && (

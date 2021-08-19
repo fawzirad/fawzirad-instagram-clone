@@ -8,11 +8,7 @@ body {
     font-family: 'Poppins',
         sans-serif;
     font-weight: 400;
-}
-
-.App {
     background-color: #fafafa;
-    height: 100vh;
 }
 
 .app__header {
@@ -42,6 +38,7 @@ body {
 .app__signup {
     display: flex;
     flex-direction: column;
+    
 }
 
 .menu_nav {
